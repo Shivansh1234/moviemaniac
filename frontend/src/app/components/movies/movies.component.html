@@ -1,0 +1,90 @@
+<div align="center">
+    <h1>{{user.username}}</h1>
+    <mat-tab-group selectedIndex=0 mat-align-tabs="center">
+        <!-- Part 1 start -->
+        <mat-tab label="Movie List">
+            <mat-form-field appearance="outline">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="movieFilter($event)" #input>
+                <mat-icon matSuffix>filter_list</mat-icon>
+                <mat-hint>Title format should be ttXXXXXXX</mat-hint>
+            </mat-form-field>
+
+            <div style="width: fit-content;">
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="Poster">
+                        <th mat-header-cell *matHeaderCellDef>Poster</th>
+                        <td mat-cell *matCellDef="let element"> <img [src]="element.Poster" loading="lazy"
+                                style="height: 100px; width: 75px;" /> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Title">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                        <td mat-cell *matCellDef="let element"><a href="https://www.imdb.com/title/{{element.imdbID}}/"
+                                style="text-decoration: none;" target="_blank"
+                                matTooltip="Redirect to IMDb">{{element.Title}}</a> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Genre">
+                        <th mat-header-cell *matHeaderCellDef> Genre </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Genre}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Year">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Year}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="imdbRating">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rating </th>
+                        <td mat-cell *matCellDef="let element"> {{element.imdbRating}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Director">
+                        <th mat-header-cell *matHeaderCellDef> Director </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Director}} </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</th>
+                        <td mat-cell *matCellDef="let row"> {{row[column]}} </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter '<strong>{{input.value}}</strong>'
+                        </td>
+                    </tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons=true></mat-paginator>
+            </div>
+
+        </mat-tab>
+        <!-- Part 1 end -->
+        <!-- Part 2 start -->
+        <mat-tab label="Add Movie">
+            <form [formGroup]="movieForm" (ngSubmit)="onAdd()">
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Title Id</mat-label>
+                        <input matInput placeholder="Enter Title Id" type="text" formControlName="moviename" required>
+                        <mat-icon matSuffix>movie</mat-icon>
+                        <mat-hint></mat-hint>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!movieForm.valid">Submit</button>
+            </form>
+        </mat-tab>
+        <!-- Part 2 end -->
+        <!-- Part 3 start -->
+        <mat-tab label="Delete Movie">
+            <button mat-raised-button color="warn">Movie Delete</button>
+        </mat-tab>
+        <!-- Part 3 end -->
+    </mat-tab-group>
+</div>
